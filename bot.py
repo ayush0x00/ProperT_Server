@@ -12,23 +12,24 @@ class AuthHandler:
         return api
 
 class MyStreamListener(tweepy.StreamListener,AuthHandler):
-    payload=[{}]
+    payload=[{"userId":"-1","weight":-1,"platform":"twitter"}]
 
     def accumulateTweets(self,userId,platform="twitter"):
-        exists=False
-        for i in MyStreamListener.payload:
-            if(i.userid):
+        print(userId)
+        try:
+            for i in MyStreamListener.payload:
+                i[userId]
+                print("Existing user...")
                 i.weight+=1
-                exists=True
-                break
-        if not exists:
-            data={"userId":userId,"weight":1,"platform":platform}
+        except KeyError:
+            print("New user...")
+            data={"userId":userId,"weight":1,"platform":"twitter"}
             MyStreamListener.payload.append(data)
         
         if(len(MyStreamListener.payload)==5):
-            result=self.tokenizeAsset(MyStreamListener.payload)
+            result= self.tokenizeAsset(MyStreamListener.payload)
             if result:
-                MyStreamListener.payload=[{}]
+                MyStreamListener.payload=[{"userId":"-1","weight":-1,"platform":"twitter"}]
     
 
     def tokenizeAsset(self, payload):
@@ -46,7 +47,8 @@ class MyStreamListener(tweepy.StreamListener,AuthHandler):
             return False
 
     def on_status(self, status):
-        pass
+        #print(status)
+        self.accumulateTweets(status.user.id_str)
     
     def on_error(self, status_code):
         print(status_code)
@@ -65,7 +67,7 @@ class Streamer:
 
 if __name__== "__main__":
     load_dotenv()
-    rule=["tokenTezos"]
+    rule=["@ayush_0x00","@Twitter"]
     stream=Streamer()
     stream.streamTweets(rule)
     
