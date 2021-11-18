@@ -67,7 +67,7 @@ class Streamer:
 
 if __name__== "__main__":
     load_dotenv()
-    rule=["@ayush_0x00","@Twitter"]
+    rule=["@ayush_0x00","@Twitter","ProperT"]
     stream=Streamer()
     stream.streamTweets(rule)
     

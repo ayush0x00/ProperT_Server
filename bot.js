@@ -102,7 +102,6 @@ function streamConnect(retryAttempt) {
   stream
     .on("data", (data) => {
       try {
-        console.log(data);
         const json = JSON.parse(data);
         console.log(json);
         // A successful connection resets retry count.
