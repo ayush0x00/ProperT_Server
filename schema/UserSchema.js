@@ -7,6 +7,7 @@ var UserSchema = new Schema({
   mediaWatch: { type: [String] },
   mediaDetails: { type: [Schema.Types.Mixed] },
   token: { type: String, unique: true },
+  expires_in: { type: Integer },
 });
 
 module.exports = mongoose.model("User", UserSchema);
